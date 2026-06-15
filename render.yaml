@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: ulap-corner
+    env: node
+    plan: free
+    buildCommand: npm install && cd server && npm install
+    startCommand: node server/index.js
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: 465
+      - key: SMTP_SECURE
+        value: true
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: PAYMONGO_SECRET_KEY
+        sync: false
