@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Checkout | Ulap Corner</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="/store/age-gate.js"></script>
+  <link rel="stylesheet" href="../assets/css/theme.css" />
+  <script src="../assets/js/shared.js"></script>
+</head>
+
+<body class="font-body-md text-on-background selection:bg-primary-container selection:text-on-primary">
+  <header
+    class="fixed top-0 w-full z-50 bg-glass-fill backdrop-blur-xl border-b border-white/10 shadow-[0_4_20px_rgba(0,0,0,0.5)]">
+    <div class="flex justify-between items-center px-margin-desktop py-4 max-w-container-max mx-auto">
+      <a class="font-headline-md text-headline-md font-bold text-primary-container drop-shadow-[0_0_10px_rgba(0,240,255,0.4)]"
+        href="shop.html">Ulap Corner</a>
+      <nav class="hidden md:flex gap-gutter items-center">
+        <a class="text-on-surface-variant hover:text-primary transition-colors" href="shop.html">Shop</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Flavors</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors text-primary-container border-b-2 border-primary-container pb-1"
+          href="checkout.html">Checkout</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors" href="order-tracking.html">Track
+          Order</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors" href="/store/login.html">Admin</a>
+      </nav>
+      <div class="flex items-center gap-4">
+        <button
+          class="material-symbols-outlined text-on-surface-variant hover:bg-white/5 p-2 rounded-full transition-all">shopping_cart</button>
+        <button
+          class="material-symbols-outlined text-on-surface-variant hover:bg-white/5 p-2 rounded-full transition-all">account_circle</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="pt-24 pb-12 px-4 md:px-margin-desktop max-w-container-max mx-auto">
+    <div class="flex items-center justify-center mb-12 overflow-x-auto py-4">
+      <div class="flex items-center space-x-4">
+        <div id="step-header-1" class="flex items-center text-primary-container transition-all duration-300">
+          <span class="step-circle w-8 h-8 rounded-full border-2 border-primary-container flex items-center justify-center font-bold text-xs bg-primary-container/10 shadow-[0_0_10px_rgba(0,240,255,0.4)]">1</span>
+          <span class="ml-2 font-label-caps text-label-caps whitespace-nowrap">SHIPPING</span>
+        </div>
+        <div class="w-12 h-px bg-surface-variant"></div>
+        <div id="step-header-2" class="flex items-center text-on-surface-variant transition-all duration-300">
+          <span class="step-circle w-8 h-8 rounded-full border-2 border-surface-variant flex items-center justify-center font-bold text-xs">2</span>
+          <span class="ml-2 font-label-caps text-label-caps whitespace-nowrap">PAYMENT</span>
+        </div>
+        <div class="w-12 h-px bg-surface-variant"></div>
+        <div id="step-header-3" class="flex items-center text-on-surface-variant transition-all duration-300">
+          <span class="step-circle w-8 h-8 rounded-full border-2 border-surface-variant flex items-center justify-center font-bold text-xs">3</span>
+          <span class="ml-2 font-label-caps text-label-caps whitespace-nowrap">CONFIRM</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+      <div class="lg:col-span-8 space-y-gutter">
+        <!-- STEP 1: SHIPPING INFORMATION -->
+        <section id="checkout-step-1" class="glass-panel rounded-xl p-8 space-y-6">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary-container">local_shipping</span>
+            <h2 class="font-headline-md text-headline-md">Delivery Information</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-1">
+              <label class="font-label-caps text-label-caps text-on-surface-variant block">FULL NAME</label>
+              <input id="full-name"
+                class="w-full bg-surface-container border-b border-surface-variant focus:border-primary-container focus:ring-0 text-on-background transition-all py-3 px-4 outline-none"
+                placeholder="John Silverhand" type="text" />
+            </div>
+            <div class="space-y-1">
+              <label class="font-label-caps text-label-caps text-on-surface-variant block">CONTACT NUMBER</label>
+              <input id="contact-number"
+                class="w-full bg-surface-container border-b border-surface-variant focus:border-primary-container focus:ring-0 text-on-background transition-all py-3 px-4 outline-none"
+                placeholder="+63 9XX XXX XXXX" type="tel" />
+            </div>
+            <div class="md:col-span-2 space-y-1">
+              <label class="font-label-caps text-label-caps text-on-surface-variant block">STREET ADDRESS / BUILDING</label>
+              <input id="address"
+                class="w-full bg-surface-container border-b border-surface-variant focus:border-primary-container focus:ring-0 text-on-background transition-all py-3 px-4 outline-none"
+                placeholder="Apartment 2077, Night City Heights" type="text" />
+            </div>
+            <div class="space-y-1">
+              <label class="font-label-caps text-label-caps text-on-surface-variant block">DELIVERY CITY / DISTRICT</label>
+              <input id="city"
+                class="w-full bg-surface-container border-b border-surface-variant focus:border-primary-container focus:ring-0 text-on-background transition-all py-3 px-4 outline-none"
+                placeholder="E.g., Bonifacio Global City, Taguig" type="text" />
+            </div>
+            <div class="space-y-1">
+              <label class="font-label-caps text-label-caps text-on-surface-variant block">POSTAL CODE</label>
+              <input id="postal-code"
+                class="w-full bg-surface-container border-b border-surface-variant focus:border-primary-container focus:ring-0 text-on-background transition-all py-3 px-4 outline-none"
+                placeholder="1634" type="text" />
+            </div>
+            <div class="md:col-span-2 space-y-1">
+              <label class="font-label-caps text-label-caps text-on-surface-variant block">DELIVERY NOTES / LANDMARK (OPTIONAL)</label>
+              <textarea id="delivery-notes" rows="2"
+                class="w-full bg-surface-container border-b border-surface-variant focus:border-primary-container focus:ring-0 text-on-background transition-all py-3 px-4 outline-none resize-none"
+                placeholder="E.g., Near Petron gas station, call on arrival..."></textarea>
+            </div>
+          </div>
+          <div class="flex justify-end pt-4">
+            <button type="button" onclick="goToStep(2)"
+              class="px-6 py-3 bg-primary-container text-on-primary font-label-caps text-xs rounded-lg hover:shadow-[0_0_15px_rgba(0,240,255,0.4)] active:scale-95 transition-all flex items-center gap-2 font-bold">
+              PROCEED TO PAYMENT
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- STEP 2: PAYMENT METHOD -->
+        <section id="checkout-step-2" class="glass-panel rounded-xl p-8 hidden space-y-6">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary-container">payments</span>
+            <h2 class="font-headline-md text-headline-md">Payment Method</h2>
+          </div>
+
+          <!-- Dynamic Payment Alert Message -->
+          <div id="payment-method-alert" class="p-4 rounded-lg bg-emerald-950/20 border border-emerald-500/20 text-xs text-emerald-300 font-label-caps leading-relaxed flex items-start gap-2.5">
+            <span class="material-symbols-outlined text-sm mt-0.5">check_circle</span>
+            <span>You have selected Cash on Delivery (COD). No online pre-payment required.</span>
+          </div>
+
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <button
+              class="payment-btn flex flex-col items-center justify-center p-6 rounded-lg border border-surface-variant bg-white/5 hover:bg-white/10 transition-all duration-300"
+              data-method="GCASH" onclick="selectPayment(this)">
+              <span class="material-symbols-outlined text-primary-container text-4xl mb-2">wallet</span>
+              <span class="font-label-caps text-label-caps">GCASH</span>
+            </button>
+            <button
+              class="payment-btn flex flex-col items-center justify-center p-6 rounded-lg border border-surface-variant bg-white/5 hover:bg-white/10 transition-all duration-300"
+              data-method="MAYA" onclick="selectPayment(this)">
+              <span class="material-symbols-outlined text-tertiary text-4xl mb-2">token</span>
+              <span class="font-label-caps text-label-caps">MAYA</span>
+            </button>
+            <button
+              class="payment-btn flex flex-col items-center justify-center p-6 rounded-lg border border-surface-variant bg-white/5 hover:bg-white/10 transition-all duration-300"
+              data-method="GOTYME" onclick="selectPayment(this)">
+              <span class="material-symbols-outlined text-secondary text-4xl mb-2">credit_card</span>
+              <span class="font-label-caps text-label-caps">GOTYME</span>
+            </button>
+            <button
+              class="payment-btn flex flex-col items-center justify-center p-6 rounded-lg border border-surface-variant bg-white/5 hover:bg-white/10 transition-all duration-300"
+              data-method="BANK_TRANSFER" onclick="selectPayment(this)">
+              <span class="material-symbols-outlined text-on-surface-variant text-4xl mb-2">account_balance</span>
+              <span class="font-label-caps text-label-caps text-center leading-tight">BANK<br />TRANSFER</span>
+            </button>
+            <button
+              class="payment-btn flex flex-col items-center justify-center p-6 rounded-lg border border-surface-variant bg-white/5 hover:bg-white/10 transition-all duration-300 active-glow"
+              data-method="COD" onclick="selectPayment(this)">
+              <span class="material-symbols-outlined text-primary-container text-4xl mb-2">handshake</span>
+              <span class="font-label-caps text-label-caps">COD</span>
+            </button>
+          </div>
+
+          <div class="flex justify-between pt-6 border-t border-white/10">
+            <button type="button" onclick="goToStep(1)"
+              class="px-5 py-3 border border-white/10 hover:bg-white/5 text-on-surface-variant hover:text-on-surface font-label-caps text-xs rounded-lg transition-all flex items-center gap-2">
+              <span class="material-symbols-outlined text-sm">arrow_back</span>
+              SHIPPING DETAILS
+            </button>
+            <button type="button" onclick="goToStep(3)"
+              class="px-6 py-3 bg-primary-container text-on-primary font-label-caps text-xs rounded-lg hover:shadow-[0_0_15px_rgba(0,240,255,0.4)] active:scale-95 transition-all flex items-center gap-2 font-bold">
+              REVIEW ORDER
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- STEP 3: ORDER REVIEW AND AGE GATE -->
+        <section id="checkout-step-3" class="glass-panel rounded-xl p-8 hidden space-y-6">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary-container">fact_check</span>
+            <h2 class="font-headline-md text-headline-md">Review Order Details</h2>
+          </div>
+
+          <div class="space-y-4">
+            <h3 class="font-label-caps text-xs text-primary-container tracking-widest">CONFIRM ENTRY DATA</h3>
+            <div class="bg-white/5 border border-white/10 rounded-lg p-5 space-y-3 text-sm">
+              <p><strong class="text-on-surface-variant font-label-caps text-[10px]">DELIVER TO:</strong> <span id="summary-name" class="text-on-surface font-semibold"></span> (<span id="summary-contact" class="text-on-surface"></span>)</p>
+              <p><strong class="text-on-surface-variant font-label-caps text-[10px]">ADDRESS:</strong> <span id="summary-address" class="text-on-surface"></span>, <span id="summary-city" class="text-on-surface"></span> <span id="summary-zip" class="text-primary-container"></span></p>
+              <p id="summary-notes-container" class="hidden"><strong class="text-on-surface-variant font-label-caps text-[10px]">RIDER NOTES:</strong> <span id="summary-notes" class="text-on-surface italic"></span></p>
+              <p><strong class="text-on-surface-variant font-label-caps text-[10px]">PAYMENT METHOD:</strong> <span id="summary-payment" class="text-primary-container font-semibold"></span></p>
+            </div>
+
+            <!-- Age Gate Checkbox -->
+            <label class="flex items-start gap-3 p-4 rounded-lg bg-red-950/20 border border-red-500/20 cursor-pointer group select-none mt-4">
+              <input type="checkbox" id="age-verification-checkbox" class="accent-red-500 rounded focus:ring-0 mt-1" onchange="toggleOrderButton()" />
+              <span class="text-xs text-red-200 leading-snug">
+                I confirm that I am **18 years of age or older** and authorized to receive this shipment. I understand that courier personnel may require age verification identification card upon drop off.
+              </span>
+            </label>
+          </div>
+
+          <div class="flex justify-between pt-6 border-t border-white/10">
+            <button type="button" onclick="goToStep(2)"
+              class="px-5 py-3 border border-white/10 hover:bg-white/5 text-on-surface-variant hover:text-on-surface font-label-caps text-xs rounded-lg transition-all flex items-center gap-2">
+              <span class="material-symbols-outlined text-sm">arrow_back</span>
+              PAYMENT METHOD
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <aside class="lg:col-span-4">
+        <div class="glass-panel rounded-xl p-8 sticky top-28 space-y-8">
+          <h2 class="font-headline-md text-headline-md">Order Summary</h2>
+          <div class="space-y-6" id="checkout-product-list">
+          </div>
+          <div class="h-px bg-surface-variant opacity-50"></div>
+          
+          <!-- Promo Code Input -->
+          <div class="space-y-2">
+            <label class="font-label-caps text-[10px] text-on-surface-variant block">VOUCHER CODE</label>
+            <div class="flex gap-2">
+              <input id="promo-input" type="text" placeholder="ENTER PROMO CODE"
+                class="flex-grow bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs font-label-caps text-on-surface outline-none focus:border-primary-container/50 focus:ring-0 transition-colors uppercase" />
+              <button type="button" onclick="applyPromoCode()"
+                class="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-lg text-xs font-label-caps text-on-surface font-semibold active:scale-95 transition-all">
+                APPLY
+              </button>
+            </div>
+            <p id="promo-message" class="text-[9px] font-label-caps hidden"></p>
+          </div>
+
+          <div class="h-px bg-surface-variant opacity-50"></div>
+          
+          <div class="space-y-3">
+            <div class="flex justify-between text-on-surface-variant">
+              <span class="font-label-caps text-label-caps">SUBTOTAL</span>
+              <span id="checkout-subtotal">₱0.00</span>
+            </div>
+            <div class="flex justify-between text-on-surface-variant">
+              <span class="font-label-caps text-label-caps">SHIPPING FEE</span>
+              <span id="checkout-shipping">₱50.00</span>
+            </div>
+            <div class="flex justify-between text-on-surface-variant">
+              <span id="checkout-discount-label" class="font-label-caps text-label-caps text-secondary">CYBER-PROMO (10%)</span>
+              <span class="text-secondary" id="checkout-discount">-₱0.00</span>
+            </div>
+            <div class="flex justify-between items-end pt-4">
+              <span class="font-label-caps text-label-caps">TOTAL AMOUNT</span>
+              <span
+                class="font-display-lg text-headline-md text-primary-container drop-shadow-[0_0_10px_rgba(0,240,255,0.4)]"
+                id="checkout-total">₱0.00</span>
+            </div>
+          </div>
+          <button id="complete-order-btn"
+            class="w-full bg-primary-container text-[#002022] font-headline-md text-headline-md py-6 rounded-lg hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] active:scale-95 transition-all duration-300 flex items-center justify-center gap-3 font-bold">
+            PROCEED TO PAYMENT
+            <span class="material-symbols-outlined" id="btn-icon">arrow_forward</span>
+          </button>
+          <p class="text-center font-label-caps text-[10px] text-on-surface-variant uppercase tracking-widest mb-4">Secure
+            SSL Encrypted Transaction</p>
+          <div class="h-px bg-white/10 my-4"></div>
+          <div class="space-y-2">
+            <p class="text-center font-label-caps text-[8px] text-on-surface-variant uppercase tracking-widest opacity-60">OFFICIAL PARTNER CHANNELS</p>
+            <div class="flex flex-wrap items-center justify-center gap-3 opacity-55 hover:opacity-90 transition-opacity duration-300">
+              <span class="text-[9px] font-bold tracking-wider font-display border border-white/10 rounded px-2 py-0.5 text-on-surface bg-white/5">GCASH</span>
+              <span class="text-[9px] font-bold tracking-wider font-display border border-white/10 rounded px-2 py-0.5 text-on-surface bg-white/5">MAYA</span>
+              <span class="text-[9px] font-bold tracking-wider font-display border border-white/10 rounded px-2 py-0.5 text-on-surface bg-white/5">GOTYME</span>
+              <span class="text-[9px] font-bold tracking-wider font-display border border-white/10 rounded px-2 py-0.5 text-on-surface bg-white/5">PAYMONGO</span>
+              <span class="text-[9px] font-bold tracking-wider font-display border border-white/10 rounded px-2 py-0.5 text-on-surface bg-white/5">LALAMOVE</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="w-full mt-auto bg-surface-container-lowest border-t border-surface-variant">
+    <div
+      class="flex flex-col md:flex-row justify-between items-center px-margin-desktop py-base gap-gutter max-w-container-max mx-auto">
+      <span class="font-headline-md text-headline-md text-secondary-container">Ulap Corner</span>
+      <div class="flex flex-wrap justify-center gap-6">
+        <a class="text-label-caps font-label-caps text-on-surface-variant hover:text-tertiary transition-colors"
+          href="#">Terms of Service</a>
+        <a class="text-label-caps font-label-caps text-on-surface-variant hover:text-tertiary transition-colors"
+          href="#">Privacy Policy</a>
+        <a class="text-label-caps font-label-caps text-on-surface-variant hover:text-tertiary transition-colors"
+          href="#">Compliance</a>
+      </div>
+      <p class="text-label-caps font-label-caps text-secondary opacity-80">© 2024 Ulap Corner. ALL RIGHTS RESERVED. ENJOY
+        THE FOG.</p>
+    </div>
+  </footer>
+
+  <script>
+    let currentStep = 1;
+
+    function selectPayment(element) {
+      document.querySelectorAll('.payment-btn').forEach(btn => {
+        btn.classList.remove('active-glow');
+      });
+      element.classList.add('active-glow');
+      
+      const method = element.getAttribute('data-method');
+      const alertBox = document.getElementById('payment-method-alert');
+      if (alertBox) {
+        if (method === 'COD') {
+          alertBox.className = "p-4 rounded-lg bg-emerald-950/20 border border-emerald-500/20 text-xs text-emerald-300 font-label-caps leading-relaxed flex items-start gap-2.5";
+          alertBox.innerHTML = '<span class="material-symbols-outlined text-sm mt-0.5">check_circle</span><span>You have selected Cash on Delivery (COD). No online pre-payment required.</span>';
+        } else {
+          alertBox.className = "p-4 rounded-lg bg-primary-container/10 border border-primary-container/20 text-xs text-primary-container font-label-caps leading-relaxed flex items-start gap-2.5";
+          alertBox.innerHTML = `<span class="material-symbols-outlined text-sm mt-0.5">info</span><span>You have selected ${method}. You will be securely redirected to the external payment gateway to finalize your payment.</span>`;
+        }
+      }
+    }
+
+    function generateUUID() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
+    let idempotencyKey = localStorage.getItem('checkout_idempotency_key');
+    if (!idempotencyKey) {
+      idempotencyKey = generateUUID();
+      localStorage.setItem('checkout_idempotency_key', idempotencyKey);
+    }
+
+    function showToast(message, isError = true) {
+      document.querySelectorAll('.checkout-toast').forEach(t => t.remove());
+
+      const toast = document.createElement('div');
+      toast.className = `checkout-toast fixed bottom-6 right-6 z-50 flex items-center gap-3 px-6 py-4 rounded-lg border backdrop-blur-xl shadow-2xl transition-all duration-300 translate-y-10 opacity-0 ${isError
+        ? 'bg-red-950/90 border-red-500/30 text-red-200'
+        : 'bg-emerald-950/90 border-emerald-500/30 text-emerald-200'
+        }`;
+
+      const icon = document.createElement('span');
+      icon.className = 'material-symbols-outlined';
+      icon.textContent = isError ? 'error' : 'check_circle';
+
+      const text = document.createElement('span');
+      text.className = 'font-semibold text-sm';
+      text.textContent = message;
+
+      toast.appendChild(icon);
+      toast.appendChild(text);
+      document.body.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-10', 'opacity-0');
+      }, 50);
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-10', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    let cart = JSON.parse(localStorage.getItem('cv_cart')) || [];
+
+    // State Variables for Checkout computation
+    let subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    let shippingFee = 40.00; // default to Taguig zone
+    let appliedPromo = '';
+    let promoDiscountPercent = 0.00;
+    let promoFreeShipping = false;
+    let discount = 0.00;
+    let totalAmount = subtotal > 0 ? (subtotal + shippingFee) : 0.00;
+
+    function renderCheckoutSummary() {
+      const productListContainer = document.getElementById('checkout-product-list');
+      if (productListContainer) {
+        productListContainer.innerHTML = cart.map(item => `
+          <div class="flex gap-4 items-center">
+            <div class="w-16 h-16 bg-surface-container rounded-lg overflow-hidden flex-shrink-0 border border-white/10 shadow-[0_0_15px_rgba(0,240,255,0.2)]">
+              <img class="w-full h-full object-cover" src="${item.image_url}" onerror="this.src='https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&q=80&w=300&h=300'"/>
+            </div>
+            <div class="flex-grow min-w-0">
+              <p class="font-semibold text-on-background truncate text-sm">${item.name}</p>
+              <p class="text-[10px] font-label-caps text-on-surface-variant mt-0.5">${item.specs}</p>
+              <p class="text-primary-container font-bold mt-1 text-xs">₱${(item.price * item.qty).toFixed(2)}</p>
+            </div>
+            <div class="flex flex-col items-end gap-1.5 shrink-0">
+              <div class="flex items-center border border-white/10 rounded-lg overflow-hidden bg-white/5">
+                <button type="button" onclick="updateCheckoutQty('${item.cartItemId || item.id}', -1)" class="px-2 py-0.5 hover:bg-white/10 text-[10px] font-bold text-on-surface-variant hover:text-on-surface transition-colors">−</button>
+                <span class="px-2 py-0.5 text-[10px] font-bold text-primary-container border-x border-white/10">${item.qty}</span>
+                <button type="button" onclick="updateCheckoutQty('${item.cartItemId || item.id}', 1)" class="px-2 py-0.5 hover:bg-white/10 text-[10px] font-bold text-on-surface-variant hover:text-on-surface transition-colors">+</button>
+              </div>
+              <button type="button" onclick="removeCheckoutItem('${item.cartItemId || item.id}')" class="font-label-caps text-[8px] text-error/70 hover:text-error transition-colors tracking-widest">REMOVE</button>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function updateCheckoutQty(key, delta) {
+      const item = cart.find(i => i.cartItemId === key || i.id === key);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) {
+        cart = cart.filter(i => i.cartItemId !== key && i.id !== key);
+      } else {
+        if (item.stock && item.qty > item.stock) {
+          item.qty = item.stock;
+          showToast(`Max stock: ${item.stock} units`);
+        }
+      }
+      localStorage.setItem('cv_cart', JSON.stringify(cart));
+      if (cart.length === 0) {
+        showToast('Cart is empty. Redirecting to storefront...');
+        setTimeout(() => window.location.href = 'shop.html', 1500);
+      } else {
+        subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        renderCheckoutSummary();
+        calculateShipping();
+      }
+    }
+
+    function removeCheckoutItem(key) {
+      cart = cart.filter(i => i.cartItemId !== key && i.id !== key);
+      localStorage.setItem('cv_cart', JSON.stringify(cart));
+      if (cart.length === 0) {
+        showToast('Cart is empty. Redirecting to storefront...');
+        setTimeout(() => window.location.href = 'shop.html', 1500);
+      } else {
+        subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        renderCheckoutSummary();
+        calculateShipping();
+      }
+    }
+
+    let shippingCalcTimeout = null;
+
+    async function calculateShipping() {
+      const addressInput = document.getElementById('address');
+      const cityInput = document.getElementById('city');
+      const addressVal = addressInput ? addressInput.value.trim() : '';
+      const cityVal = cityInput ? cityInput.value.trim() : '';
+
+      // Fallback local zone computation
+      let localFee = 50.00;
+      const combined = `${addressVal} ${cityVal}`.toLowerCase();
+      
+      if (combined.includes('taguig') || combined.includes('pateros')) {
+        localFee = 40.00;
+      } else if (combined.includes('makati') || combined.includes('pasig') || combined.includes('mandaluyong')) {
+        localFee = 70.00;
+      } else if (
+        combined.includes('manila') || combined.includes('quezon') || combined.includes('qc') || 
+        combined.includes('pasay') || combined.includes('san juan') || combined.includes('sanjuan') || 
+        combined.includes('marikina') || combined.includes('muntinlupa') || combined.includes('las pinas') || 
+        combined.includes('las piñas') || combined.includes('parañaque') || combined.includes('paranaque') ||
+        combined.includes('valenzuela') || combined.includes('malabon') || combined.includes('navotas') || 
+        combined.includes('caloocan')
+      ) {
+        localFee = 100.00;
+      } else {
+        localFee = 180.00;
+      }
+
+      shippingFee = localFee;
+      if (promoFreeShipping) {
+        shippingFee = 0.00;
+      }
+
+      // Initial update with fallback fee
+      recalculateTotals();
+      
+      const feeLabel = document.getElementById('checkout-shipping');
+      if (promoFreeShipping) {
+        if (feeLabel) feeLabel.textContent = '₱0.00 (Free Promo)';
+        return;
+      }
+
+      if (!addressVal || !cityVal) {
+        return;
+      }
+
+      // Clear previous timer to debounce API calls while user is typing
+      if (shippingCalcTimeout) clearTimeout(shippingCalcTimeout);
+
+      shippingCalcTimeout = setTimeout(async () => {
+        if (feeLabel) {
+          feeLabel.innerHTML = `₱${shippingFee.toFixed(2)} <span class="material-symbols-outlined text-[10px] animate-spin align-middle ml-1">sync</span>`;
+        }
+
+        try {
+          const query = `${addressVal}, ${cityVal}, Metro Manila, Philippines`;
+          const geocodeUrl = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(query)}`;
+          
+          const geoRes = await fetch(geocodeUrl, {
+            headers: { 'Accept': 'application/json' }
+          });
+          
+          if (!geoRes.ok) throw new Error('Geocoding failed');
+          const geoData = await geoRes.json();
+          
+          if (geoData && geoData.length > 0) {
+            const lat = geoData[0].lat;
+            const lon = geoData[0].lon;
+            
+            // BGC coordinates for Taguig Main Branch
+            const branchLat = 14.5409;
+            const branchLon = 121.0503;
+            
+            const routeUrl = `https://router.project-osrm.org/route/v1/driving/${branchLon},${branchLat};${lon},${lat}?overview=false`;
+            const routeRes = await fetch(routeUrl);
+            if (!routeRes.ok) throw new Error('OSRM route failed');
+            const routeData = await routeRes.json();
+            
+            if (routeData.routes && routeData.routes.length > 0) {
+              const distanceMeters = routeData.routes[0].distance;
+              const distKm = distanceMeters / 1000;
+              
+              // Standard Lalamove Motorcycle rate formula
+              // Base rate: 49 PHP (covers first km)
+              // Distance rate: 7 PHP per km
+              const baseFare = 49.00;
+              const perKmRate = 7.00;
+              let calculated = baseFare + (distKm * perKmRate);
+              
+              // Enforce bounds (e.g., minimum 40, maximum 350)
+              calculated = Math.max(40.00, Math.min(350.00, calculated));
+              shippingFee = Math.round(calculated);
+
+              if (promoFreeShipping) {
+                shippingFee = 0.00;
+              }
+
+              recalculateTotals();
+              if (feeLabel) {
+                feeLabel.textContent = `₱${shippingFee.toFixed(2)} (Lalamove - ${distKm.toFixed(1)}km)`;
+              }
+              return;
+            }
+          }
+        } catch (err) {
+          console.warn('Lalamove dynamic auto-calc failed, using fallback zone rate:', err);
+        }
+
+        // Final UI refresh to ensure spinner is removed if API fails or finishes
+        if (feeLabel) {
+          feeLabel.textContent = `₱${shippingFee.toFixed(2)}`;
+        }
+      }, 1000);
+    }
+
+    function applyPromoCode() {
+      const code = document.getElementById('promo-input').value.trim().toUpperCase();
+      const msg = document.getElementById('promo-message');
+      
+      if (!code) {
+        msg.className = "text-[9px] font-label-caps text-on-surface-variant";
+        msg.textContent = "Please enter a code.";
+        msg.classList.remove('hidden');
+        return;
+      }
+
+      if (code === 'CYBER10') {
+        appliedPromo = 'CYBER10';
+        promoDiscountPercent = 0.10;
+        promoFreeShipping = false;
+        msg.className = "text-[9px] font-label-caps text-emerald-400";
+        msg.textContent = "Promo applied: 10% discount!";
+        msg.classList.remove('hidden');
+      } else if (code === 'NEONFREE') {
+        appliedPromo = 'NEONFREE';
+        promoDiscountPercent = 0.0;
+        promoFreeShipping = true;
+        msg.className = "text-[9px] font-label-caps text-emerald-400";
+        msg.textContent = "Promo applied: Free Shipping!";
+        msg.classList.remove('hidden');
+      } else {
+        msg.className = "text-[9px] font-label-caps text-red-400 animate-pulse";
+        msg.textContent = "Invalid voucher protocol.";
+        msg.classList.remove('hidden');
+        return;
+      }
+
+      calculateShipping();
+    }
+
+    function recalculateTotals() {
+      discount = subtotal * promoDiscountPercent;
+      totalAmount = subtotal > 0 ? (subtotal + shippingFee - discount) : 0.00;
+
+      document.getElementById('checkout-subtotal').textContent = `₱${subtotal.toFixed(2)}`;
+      document.getElementById('checkout-shipping').textContent = `₱${shippingFee.toFixed(2)}`;
+      
+      const discountLabel = document.getElementById('checkout-discount-label');
+      if (discountLabel) {
+        discountLabel.textContent = appliedPromo ? `PROMO DISCOUNT (${appliedPromo})` : 'DISCOUNT';
+      }
+      document.getElementById('checkout-discount').textContent = `-₱${discount.toFixed(2)}`;
+      document.getElementById('checkout-total').textContent = `₱${totalAmount.toFixed(2)}`;
+    }
+
+    function setupLiveValidation() {
+      const fields = [
+        { id: 'full-name', validate: val => val.trim().length >= 3 },
+        { id: 'contact-number', validate: val => /^\+?[\d\s-]{10,}$/.test(val.trim()) },
+        { id: 'address', validate: val => val.trim().length >= 5 },
+        { id: 'city', validate: val => val !== null && val !== "" },
+        { id: 'postal-code', validate: val => /^\d{4,}$/.test(val.trim()) }
+      ];
+
+      fields.forEach(field => {
+        const input = document.getElementById(field.id);
+        if (input) {
+          const handler = () => {
+            const isValid = field.validate(input.value);
+            if (isValid) {
+              input.classList.remove('border-surface-variant', 'border-red-500/50', 'shadow-[0_0_10px_rgba(239,68,68,0.2)]', 'bg-red-950/10');
+              input.classList.add('border-emerald-500/50', 'shadow-[0_0_10px_rgba(16,185,129,0.2)]', 'bg-emerald-950/5');
+            } else {
+              input.classList.remove('border-surface-variant', 'border-emerald-500/50', 'shadow-[0_0_10px_rgba(16,185,129,0.2)]', 'bg-emerald-950/5');
+              input.classList.add('border-red-500/50', 'shadow-[0_0_10px_rgba(239,68,68,0.2)]', 'bg-red-950/10');
+            }
+          };
+          input.addEventListener('input', handler);
+          input.addEventListener('change', handler);
+          if (field.id === 'address' || field.id === 'city') {
+            input.addEventListener('input', calculateShipping);
+            input.addEventListener('change', calculateShipping);
+          }
+          if (input.value) handler();
+        }
+      });
+    }
+
+    function validateStep1() {
+      const fullName = document.getElementById('full-name').value.trim();
+      const contactNumber = document.getElementById('contact-number').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const city = document.getElementById('city').value.trim();
+      const postalCode = document.getElementById('postal-code').value.trim();
+
+      if (!fullName || !contactNumber || !address || !city || !postalCode) {
+        showToast('Please fill out all delivery information fields.');
+        return false;
+      }
+      return true;
+    }
+
+    function toggleOrderButton() {
+      if (currentStep !== 3) return;
+      const verified = document.getElementById('age-verification-checkbox').checked;
+      const completeBtn = document.getElementById('complete-order-btn');
+      if (verified) {
+        completeBtn.disabled = false;
+        completeBtn.classList.remove('opacity-40', 'cursor-not-allowed');
+      } else {
+        completeBtn.disabled = true;
+        completeBtn.classList.add('opacity-40', 'cursor-not-allowed');
+      }
+    }
+
+    function updateSidebarCTA() {
+      const btn = document.getElementById('complete-order-btn');
+      if (currentStep === 1) {
+        btn.disabled = false;
+        btn.classList.remove('opacity-40', 'cursor-not-allowed');
+        btn.innerHTML = 'PROCEED TO PAYMENT <span class="material-symbols-outlined" id="btn-icon">arrow_forward</span>';
+      } else if (currentStep === 2) {
+        btn.disabled = false;
+        btn.classList.remove('opacity-40', 'cursor-not-allowed');
+        btn.innerHTML = 'REVIEW ORDER ENTRY <span class="material-symbols-outlined" id="btn-icon">arrow_forward</span>';
+      } else if (currentStep === 3) {
+        btn.innerHTML = 'COMPLETE ORDER <span class="material-symbols-outlined" id="btn-icon">bolt</span>';
+        toggleOrderButton();
+      }
+    }
+
+    function updateStepperUI(step) {
+      const step1 = document.getElementById('step-header-1');
+      const step2 = document.getElementById('step-header-2');
+      const step3 = document.getElementById('step-header-3');
+
+      const setStepActive = (el, active, current) => {
+        const circle = el.querySelector('.step-circle');
+        if (current) {
+          el.className = "flex items-center text-primary-container transition-all duration-300";
+          circle.className = "step-circle w-8 h-8 rounded-full border-2 border-primary-container flex items-center justify-center font-bold text-xs bg-primary-container/20 shadow-[0_0_10px_rgba(0,240,255,0.4)]";
+        } else if (active) {
+          el.className = "flex items-center text-primary-container/70 transition-all duration-300";
+          circle.className = "step-circle w-8 h-8 rounded-full border-2 border-primary-container/50 flex items-center justify-center font-bold text-xs bg-primary-container/5";
+        } else {
+          el.className = "flex items-center text-on-surface-variant transition-all duration-300";
+          circle.className = "step-circle w-8 h-8 rounded-full border-2 border-surface-variant flex items-center justify-center font-bold text-xs";
+        }
+      };
+
+      setStepActive(step1, step >= 1, step === 1);
+      setStepActive(step2, step >= 2, step === 2);
+      setStepActive(step3, step >= 3, step === 3);
+    }
+
+    function goToStep(step) {
+      if (step === 2 && currentStep === 1) {
+        if (!validateStep1()) return;
+      }
+      if (step === 3 && currentStep === 2) {
+        // Prepare summary data
+        document.getElementById('summary-name').textContent = document.getElementById('full-name').value.trim();
+        document.getElementById('summary-contact').textContent = document.getElementById('contact-number').value.trim();
+        document.getElementById('summary-address').textContent = document.getElementById('address').value.trim();
+        document.getElementById('summary-city').textContent = document.getElementById('city').value.trim();
+        document.getElementById('summary-zip').textContent = document.getElementById('postal-code').value.trim();
+        
+        const riderNotes = document.getElementById('delivery-notes').value.trim();
+        const summaryNotes = document.getElementById('summary-notes');
+        const notesContainer = document.getElementById('summary-notes-container');
+        if (riderNotes) {
+          summaryNotes.textContent = riderNotes;
+          notesContainer.classList.remove('hidden');
+        } else {
+          notesContainer.classList.add('hidden');
+        }
+
+        const activeBtn = document.querySelector('.payment-btn.active-glow');
+        const paymentMethod = activeBtn ? activeBtn.getAttribute('data-method') : 'COD';
+        document.getElementById('summary-payment').textContent = paymentMethod;
+      }
+
+      currentStep = step;
+      
+      document.getElementById('checkout-step-1').classList.toggle('hidden', step !== 1);
+      document.getElementById('checkout-step-2').classList.toggle('hidden', step !== 2);
+      document.getElementById('checkout-step-3').classList.toggle('hidden', step !== 3);
+
+      updateStepperUI(step);
+      updateSidebarCTA();
+    }
+
+    async function handleSidebarBtnClick(e) {
+      if (currentStep === 1) {
+        goToStep(2);
+      } else if (currentStep === 2) {
+        goToStep(3);
+      } else if (currentStep === 3) {
+        // Complete the order
+        await submitOrder();
+      }
+    }
+
+    async function submitOrder() {
+      const fullName = document.getElementById('full-name').value.trim();
+      const contactNumber = document.getElementById('contact-number').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const city = document.getElementById('city').value.trim();
+      const postalCode = document.getElementById('postal-code').value.trim();
+      const riderNotes = document.getElementById('delivery-notes').value.trim();
+
+      const activeBtn = document.querySelector('.payment-btn.active-glow');
+      const paymentMethod = activeBtn ? activeBtn.getAttribute('data-method') : 'COD';
+
+      if (!fullName || !contactNumber || !address || !city || !postalCode) {
+        showToast('Please fill out all delivery information fields.');
+        goToStep(1);
+        return;
+      }
+
+      const verified = document.getElementById('age-verification-checkbox').checked;
+      if (!verified) {
+        showToast('You must verify that you are 18 years of age or older.');
+        return;
+      }
+
+      const checkoutBtn = document.getElementById('complete-order-btn');
+      checkoutBtn.disabled = true;
+      checkoutBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      checkoutBtn.innerHTML = 'PROCESSING TRANSACTION... <span class="material-symbols-outlined animate-spin">sync</span>';
+
+      const checkoutPayload = {
+        full_name: fullName,
+        contact_number: contactNumber,
+        address: address + (riderNotes ? ` (Notes: ${riderNotes})` : ''),
+        city: city,
+        postal_code: postalCode,
+        payment_method: paymentMethod,
+        items: cart.map(item => ({
+          name: item.name,
+          price: Number(item.price.toFixed(2)),
+          qty: item.qty,
+          specs: item.specs
+        })),
+        subtotal: Number(subtotal.toFixed(2)),
+        shipping_fee: Number(shippingFee.toFixed(2)),
+        discount: Number(discount.toFixed(2)),
+        total_amount: Number(totalAmount.toFixed(2))
+      };
+
+      async function sendCheckoutRequest(retries = 3) {
+        try {
+          const response = await fetch('/api/payments/checkout', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Idempotency-Key': idempotencyKey
+            },
+            body: JSON.stringify(checkoutPayload)
+          });
+
+          if (response.ok) {
+            const result = await response.json();
+
+            localStorage.removeItem('cv_cart');
+            localStorage.removeItem('checkout_idempotency_key');
+            const placedId = result.order_id || orderId;
+            localStorage.setItem('cv_last_order_id', placedId);
+            // ── Persist to order history for Transactions drawer ──
+            try {
+              const history = JSON.parse(localStorage.getItem('cv_order_history') || '[]');
+              if (placedId && !history.includes(placedId)) {
+                history.unshift(placedId); // newest first
+                if (history.length > 20) history.length = 20; // cap at 20
+                localStorage.setItem('cv_order_history', JSON.stringify(history));
+              }
+            } catch(e) {}
+
+            if (result.checkout_url) {
+              showToast('Order recorded! Redirecting to secure portal...', false);
+              setTimeout(() => {
+                window.location.href = result.checkout_url;
+              }, 1000);
+            } else {
+              showToast('Order checkout completed! Redirecting...', false);
+              setTimeout(() => {
+                window.location.href = `order-tracking.html?order_id=${result.order_id}`;
+              }, 1000);
+            }
+          } else {
+            const errData = await response.json();
+            throw new Error(errData.error || 'Server rejected checkout transaction.');
+          }
+        } catch (error) {
+          console.warn(`[Checkout Retry] Attempt failed. Retries left: ${retries}. Error: ${error.message}`);
+          if (retries > 0) {
+            showToast(`Network timeout. Retrying in 2s... (Retries left: ${retries})`);
+            setTimeout(() => sendCheckoutRequest(retries - 1), 2000);
+          } else {
+            showToast(error.message || 'Checkout failed. Please try again.');
+            checkoutBtn.disabled = false;
+            checkoutBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            checkoutBtn.innerHTML = 'COMPLETE ORDER <span class="material-symbols-outlined">bolt</span>';
+            goToStep(3);
+          }
+        }
+      }
+
+      await sendCheckoutRequest();
+    }
+
+    // Initial setups on load
+    window.addEventListener('DOMContentLoaded', () => {
+      if (cart.length === 0) {
+        showToast('Your cart is empty. Redirecting to storefront...', true);
+        setTimeout(() => window.location.href = 'shop.html', 1500);
+        return;
+      }
+
+      // Initialize checkout elements
+      renderCheckoutSummary();
+      calculateShipping();
+      setupLiveValidation();
+
+      // Pre-apply CYBER10 promo by default
+      const promoInput = document.getElementById('promo-input');
+      if (promoInput) {
+        promoInput.value = 'CYBER10';
+        applyPromoCode();
+      }
+      
+      const checkoutBtn = document.getElementById('complete-order-btn');
+      if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', handleSidebarBtnClick);
+      }
+      
+      // Initialize first wizard step view
+      goToStep(1);
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ulap Corner | Support</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <style>
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: radial-gradient(circle at top, rgba(0, 240, 255, 0.12), transparent 25%),
+        radial-gradient(circle at 20% 25%, rgba(188, 19, 254, 0.14), transparent 20%),
+        linear-gradient(180deg, #07080e 0%, #090a11 55%, #07080e 100%);
+      color: #e3e2e7;
+      min-height: 100vh;
+    }
+    .neon-text { text-shadow: 0 0 10px rgba(0, 240, 255, 0.5); }
+  </style>
+</head>
+<body class="overflow-x-hidden flex flex-col min-h-screen">
+  <!-- Navigation -->
+  <header class="bg-[#07080e]/90 border-b border-white/10 w-full z-50 backdrop-blur-md sticky top-0">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between relative">
+      <div class="flex items-center gap-8">
+        <a href="/" class="text-2xl font-extrabold tracking-widest text-cyan-300 flex items-center gap-3 neon-text whitespace-nowrap z-50">
+          <img src="../assets/ulapcorner_logo.jpg" alt="Ulap Corner Logo" class="h-10 w-auto rounded-lg shadow-[0_0_15px_rgba(0,240,255,0.4)]" />
+          <span class="inline-block overflow-hidden max-w-[200px]">Ulap Corner</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-6 text-sm font-semibold tracking-widest uppercase text-slate-400">
+          <a href="/store/shop.html" class="hover:text-cyan-300 transition">Shop</a>
+          <a href="/store/discover.html" class="hover:text-cyan-300 transition">Discover</a>
+          <a href="#" class="hover:text-cyan-300 transition">Club</a>
+        </nav>
+      </div>
+      <div class="flex items-center justify-end gap-6 text-sm font-semibold tracking-widest uppercase text-slate-400">
+        <a href="/store/support.html" class="text-cyan-300 hidden md:block transition">Support</a>
+        <a href="/store/login.html" class="hover:text-cyan-300 flex items-center gap-2 transition">
+          <span class="material-symbols-outlined text-lg">login</span> Login
+        </a>
+        <a href="/store/shop.html" class="hover:text-cyan-300 flex items-center gap-2 transition">
+          <span class="material-symbols-outlined text-lg">shopping_cart</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow flex items-center justify-center p-6 mt-10">
+    <div class="max-w-4xl w-full bg-[#0b0e17]/80 border border-purple-400/20 backdrop-blur-md rounded-3xl p-10 shadow-[0_10px_30px_rgba(188,19,254,0.05)]">
+      <h1 class="text-4xl font-extrabold text-white mb-6">Customer Support</h1>
+      <p class="text-slate-300 leading-relaxed mb-8">
+        Care you can rely on. If you need help with your rig, troubleshooting circuitry, or anything else, our team is here for you.
+      </p>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="p-6 bg-white/5 rounded-2xl border border-white/10 hover:border-cyan-400/30 transition">
+          <h3 class="text-xl font-bold text-white mb-2">Contact Us</h3>
+          <p class="text-sm text-slate-400 mb-4">Reach out to our support team directly via email or phone.</p>
+          <a href="mailto:support@ulapcorner.com" class="text-cyan-400 text-sm font-semibold hover:underline">support@ulapcorner.com</a>
+        </div>
+        <div class="p-6 bg-white/5 rounded-2xl border border-white/10 hover:border-purple-400/30 transition">
+          <h3 class="text-xl font-bold text-white mb-2">FAQ</h3>
+          <p class="text-sm text-slate-400 mb-4">Browse our frequently asked questions to find quick answers.</p>
+          <a href="#" class="text-purple-400 text-sm font-semibold hover:underline">View FAQ &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="border-t border-white/10 py-12 bg-[#05060a] mt-auto">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-xs tracking-widest uppercase font-semibold text-slate-500">
+      <p>&copy; 2026 Ulap Corner. ALL RIGHTS RESERVED.</p>
+      <div class="flex gap-6 mt-6 md:mt-0">
+        <a href="/store/privacy.html" class="hover:text-cyan-400 transition">Privacy Policy</a>
+        <a href="/store/terms.html" class="hover:text-cyan-400 transition">Terms of Use</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

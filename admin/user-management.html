@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ulap Corner | User Management</title>
+  <meta name="description" content="Manage staff accounts and users." />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+  <link rel="stylesheet" href="../assets/css/theme.css" />
+  <style>
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, rgba(0, 240, 255, 0.16), transparent 20%),
+                  radial-gradient(circle at bottom right, rgba(188, 19, 254, 0.12), transparent 25%),
+                  linear-gradient(180deg, #06070f 0%, #090b12 100%);
+      color: #e3e2e7;
+    }
+    .dashboard-card {
+      background: rgba(7, 10, 18, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(24px);
+      box-shadow: 0 40px 120px rgba(0, 0, 0, 0.35);
+    }
+  </style>
+</head>
+<body class="flex">
+
+  <aside class="w-64 h-screen sticky top-0 bg-[#070a12]/90 border-r border-white/10 p-6 flex flex-col justify-between hidden md:flex backdrop-blur-md">
+    <div class="space-y-6">
+      <div class="flex items-center gap-2">
+        <img src="../assets/ulapcorner_logo.jpg" alt="Ulap Corner Logo" class="h-8 w-auto rounded-md shadow-[0_0_10px_rgba(0,240,255,0.3)]" onerror="this.src='https://placehold.co/100x100/1e1e24/00f0ff?text=UC'" />
+        <div>
+          <p class="uppercase tracking-[0.35em] text-xs text-cyan-300 font-bold">Ulap Corner</p>
+          <p class="text-[10px] text-white/40 tracking-wider">Management Console</p>
+        </div>
+      </div>
+
+      <nav class="space-y-1 pt-6 border-t border-white/5">
+        <a href="dashboard.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-white/70 hover:bg-white/5 hover:text-white text-xs transition text-left">
+          <span>📊</span> Dashboard
+        </a>
+        <a href="orders.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-white/70 hover:bg-white/5 hover:text-white text-xs transition text-left">
+          <span>🛒</span> Orders
+        </a>
+        <a href="staff-attendance.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-white/70 hover:bg-white/5 hover:text-white text-xs transition text-left">
+          <span>📅</span> Attendance
+        </a>
+        <a href="payroll.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-white/70 hover:bg-white/5 hover:text-white text-xs transition text-left">
+          <span>💳</span> Payroll
+        </a>
+        <a href="shift-scheduling.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-white/70 hover:bg-white/5 hover:text-white text-xs transition text-left">
+          <span>👥</span> Staff Scheduling
+        </a>
+        <a href="inventory-audit.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-white/70 hover:bg-white/5 hover:text-white text-xs transition text-left">
+          <span>📦</span> Inventory Logs
+        </a>
+        <a href="user-management.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-cyan-400/10 border border-cyan-400/25 text-cyan-300 text-xs font-medium transition">
+          <span>🧑‍💼</span> User Management
+        </a>
+      </nav>
+    </div>
+
+    <div class="space-y-3 pt-4 border-t border-white/10">
+      <a href="/" class="block w-full text-center rounded-xl bg-white/5 border border-white/10 py-2.5 text-xs uppercase tracking-wider text-cyan-100 hover:bg-cyan-400/10 transition">Landing</a>
+      <a href="/store/shop.html" class="block w-full text-center rounded-xl bg-purple-500/80 py-2.5 text-xs uppercase tracking-wider text-white hover:bg-purple-400 transition">Storefront ↗</a>
+      <button id="logout-button" class="block w-full text-center rounded-xl bg-red-500/80 py-2.5 text-xs uppercase tracking-wider text-white hover:bg-red-400 transition">Logout</button>
+    </div>
+  </aside>
+
+  <main class="flex-1 min-h-screen px-4 py-10 md:px-8 max-w-7xl mx-auto space-y-8 overflow-x-hidden">
+    
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <p class="uppercase tracking-[0.35em] text-xs text-cyan-300">ADMIN PORTAL</p>
+        <h1 class="text-4xl font-bold text-white">User Management</h1>
+        <p class="max-w-2xl text-sm leading-7 text-white/60">Create and manage staff accounts across the system.</p>
+      </div>
+    </div>
+
+    <section class="dashboard-card rounded-[24px] p-6">
+      <h2 class="text-xl font-semibold text-white mb-6">Create Staff Account</h2>
+      <form id="staff-form" class="grid gap-6">
+        <div class="grid gap-4 md:grid-cols-2">
+          <div class="space-y-2">
+            <label class="block text-[11px] uppercase tracking-[0.35em] text-white/50">Full Name</label>
+            <input id="staff-name" type="text" required class="w-full rounded-2xl border border-white/10 bg-[#0f1220] px-4 py-3.5 text-sm text-white outline-none focus:border-cyan-400/60" placeholder="e.g., Juan Dela Cruz" />
+          </div>
+          <div class="space-y-2">
+            <label class="block text-[11px] uppercase tracking-[0.35em] text-white/50">Personal Email</label>
+            <input id="staff-email" type="email" required class="w-full rounded-2xl border border-white/10 bg-[#0f1220] px-4 py-3.5 text-sm text-white outline-none focus:border-cyan-400/60" placeholder="e.g., juan@gmail.com" />
+          </div>
+          <div class="space-y-2">
+            <label class="block text-[11px] uppercase tracking-[0.35em] text-white/50">Password</label>
+            <input id="staff-password" type="password" required class="w-full rounded-2xl border border-white/10 bg-[#0f1220] px-4 py-3.5 text-sm text-white outline-none focus:border-cyan-400/60" placeholder="••••••••" />
+          </div>
+          <div class="space-y-2">
+            <label class="block text-[11px] uppercase tracking-[0.35em] text-white/50">Role</label>
+            <input id="staff-role" type="text" disabled value="Staff" class="w-full rounded-2xl border border-white/10 bg-[#0f1220]/50 px-4 py-3.5 text-sm text-white/50 outline-none cursor-not-allowed" />
+          </div>
+        </div>
+
+        <button type="submit" id="btn-create-staff" class="w-full md:w-auto px-8 rounded-xl bg-cyan-400 py-4 text-sm font-bold uppercase tracking-[0.35em] text-[#00181a] hover:bg-cyan-300 transition shadow-lg shadow-cyan-400/20 disabled:opacity-50">Create Account</button>
+        <p id="staff-message" class="text-sm"></p>
+      </form>
+    </section>
+
+    <section class="dashboard-card rounded-[24px] p-6 overflow-hidden">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <h2 class="text-xl font-semibold text-white">Accounts Registry</h2>
+        <div class="flex gap-2">
+          <button onclick="setFilter('all')" id="filter-all" class="text-[10px] px-3 py-1.5 rounded-xl border border-cyan-400/20 bg-cyan-400/10 text-cyan-300 font-bold uppercase transition">All</button>
+          <button onclick="setFilter('staff')" id="filter-staff" class="text-[10px] px-3 py-1.5 rounded-xl border border-white/10 hover:bg-white/5 text-white/70 font-bold uppercase transition">Staff</button>
+          <button onclick="setFilter('customer')" id="filter-customer" class="text-[10px] px-3 py-1.5 rounded-xl border border-white/10 hover:bg-white/5 text-white/70 font-bold uppercase transition">Customers</button>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm border-collapse">
+          <thead>
+            <tr class="border-b border-white/10 text-white/40 uppercase tracking-wider text-[11px]">
+              <th class="pb-3 font-semibold">Name</th>
+              <th class="pb-3 font-semibold">Email</th>
+              <th class="pb-3 font-semibold">Role</th>
+              <th class="pb-3 font-semibold">Status</th>
+              <th class="pb-3 font-semibold">Verified</th>
+              <th class="pb-3 font-semibold text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="userTableBody" class="divide-y divide-white/5 text-white/80">
+            <tr><td colspan="6" class="py-6 text-center text-white/40 text-xs">Loading accounts...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const logoutButton = document.getElementById('logout-button');
+    const staffForm = document.getElementById('staff-form');
+    const staffMessage = document.getElementById('staff-message');
+    const createStaffBtn = document.getElementById('btn-create-staff');
+    let allUsers = [];
+    let currentFilter = 'all';
+
+    logoutButton.addEventListener('click', () => {
+      sessionStorage.removeItem('cv_user');
+      window.location.href = '/store/login.html';
+    });
+
+    function getAuthToken() {
+        let token = '';
+        const cvUserString = sessionStorage.getItem('cv_user');
+        if (cvUserString) {
+            try {
+                const parsedUser = JSON.parse(cvUserString);
+                token = parsedUser.token || parsedUser.accessToken || '';
+            } catch (err) {}
+        }
+        return token.trim();
+    }
+
+    function setFilter(filter) {
+        currentFilter = filter;
+        ['all', 'staff', 'customer'].forEach(f => {
+            const btn = document.getElementById(`filter-${f}`);
+            if (f === filter) {
+                btn.className = "text-[10px] px-3 py-1.5 rounded-xl border border-cyan-400/25 bg-cyan-400/10 text-cyan-300 font-bold uppercase transition";
+            } else {
+                btn.className = "text-[10px] px-3 py-1.5 rounded-xl border border-white/10 hover:bg-white/5 text-white/70 font-bold uppercase transition";
+            }
+        });
+        renderUsers();
+    }
+
+    async function fetchUsersList() {
+        const token = getAuthToken();
+        try {
+            const response = await fetch('/api/admin/users', {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            const data = await response.json();
+            allUsers = Array.isArray(data) ? data : [];
+            renderUsers();
+        } catch (err) {
+            console.error("Error drawing table:", err);
+            document.getElementById('userTableBody').innerHTML = `<tr><td colspan="6" class="py-6 text-center text-red-400 text-xs">Failed to load data.</td></tr>`;
+        }
+    }
+
+    function renderUsers() {
+        const tableBody = document.getElementById('userTableBody');
+        tableBody.innerHTML = '';
+
+        const filtered = allUsers.filter(u => {
+            if (currentFilter === 'all') return true;
+            return u.role === currentFilter;
+        });
+
+        if (filtered.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-white/40 text-xs">No accounts found.</td></tr>`;
+            return;
+        }
+
+        filtered.forEach(s => {
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-white/[0.02] transition";
+            tr.innerHTML = `
+                <td class="py-3 font-medium text-white">${s.full_name}</td>
+                <td class="py-3 text-cyan-300 text-xs">${s.email}</td>
+                <td class="py-3 text-purple-400 uppercase text-[10px] tracking-wider">${s.role}</td>
+                <td class="py-3">
+                    <span class="text-[10px] px-2 py-1 rounded bg-${s.status === 'Active' || s.status === 'Approved' ? 'emerald' : 'red'}-500/20 text-${s.status === 'Active' || s.status === 'Approved' ? 'emerald' : 'red'}-400">${s.status}</span>
+                </td>
+                <td class="py-3 text-white/70">
+                    ${s.is_verified ? '<span class="text-emerald-400">Yes</span>' : '<span class="text-yellow-400">No</span>'}
+                </td>
+                <td class="py-3 text-right space-x-2">
+                    <button onclick="sendResetLink(${s.id})" class="text-[10px] bg-purple-500/10 hover:bg-purple-500 hover:text-white px-2.5 py-1.5 rounded-lg border border-purple-500/20 text-purple-400 transition">Reset Password</button>
+                    <button onclick="deleteAccount(${s.id})" class="text-[10px] bg-red-500/10 hover:bg-red-500 hover:text-white px-2.5 py-1.5 rounded-lg border border-red-500/20 text-red-400 transition">Delete</button>
+                </td>
+            `;
+            tableBody.appendChild(tr);
+        });
+    }
+
+    async function sendResetLink(id) {
+        if (!confirm('Send a password reset link to this user?')) return;
+        const token = getAuthToken();
+        try {
+            const response = await fetch(`/api/admin/users/send-reset/${id}`, {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            const data = await response.json();
+            if (response.ok) {
+                alert('✅ Password reset link has been dispatched to their email!');
+            } else {
+                alert('❌ Error: ' + (data.error || 'Failed to trigger reset.'));
+            }
+        } catch (err) {
+            alert('⚠️ Connection failure.');
+        }
+    }
+
+    async function deleteAccount(id) {
+        if (!confirm('Are you absolutely sure you want to permanently delete this user account?')) return;
+        const token = getAuthToken();
+        try {
+            const response = await fetch(`/api/admin/users/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            const data = await response.json();
+            if (response.ok) {
+                alert('✅ Account deleted successfully.');
+                fetchUsersList();
+            } else {
+                alert('❌ Error: ' + (data.error || 'Failed to delete account.'));
+            }
+        } catch (err) {
+            alert('⚠️ Connection failure.');
+        }
+    }
+
+    staffForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      staffMessage.textContent = 'Creating account and sending email...';
+      staffMessage.className = 'text-sm text-cyan-400';
+      createStaffBtn.disabled = true;
+
+      const token = getAuthToken();
+      const payload = {
+          full_name: document.getElementById('staff-name').value.trim(),
+          email: document.getElementById('staff-email').value.trim(),
+          password: document.getElementById('staff-password').value
+      };
+
+      try {
+        const response = await fetch('/api/admin/users/staff', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          staffMessage.textContent = 'Staff account created successfully! Verification email sent.';
+          staffMessage.className = 'text-sm text-emerald-300';
+          staffForm.reset();
+          fetchUsersList();
+        } else {
+          throw new Error(data.error || 'Failed to create account');
+        }
+      } catch (err) {
+        staffMessage.textContent = err.message;
+        staffMessage.className = 'text-sm text-red-400';
+      } finally {
+        createStaffBtn.disabled = false;
+      }
+    });
+
+    // Inisyal na tawag sa pag-load
+    fetchUsersList();
+  </script>
+</body>
+</html>

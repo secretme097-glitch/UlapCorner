@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Order Tracking | Ulap Corner</title>
+  <meta name="description" content="Track your Ulap Corner order status in real-time." />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/css/theme.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <script src="../assets/js/shared.js"></script>
+  <style>
+    body {
+      background: radial-gradient(circle at top, rgba(0, 240, 255, 0.10), transparent 25%),
+                  radial-gradient(circle at bottom right, rgba(188, 19, 254, 0.08), transparent 25%),
+                  linear-gradient(180deg, #06070f 0%, #090b12 100%);
+      color: #e3e2e7;
+      font-family: 'Inter', sans-serif;
+    }
+    .glass-card {
+      background: rgba(7, 10, 18, 0.85);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(20px);
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .badge-confirmed { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+    .badge-pending { background: rgba(234,179,8,0.15); color: #eab308; border: 1px solid rgba(234,179,8,0.3); }
+    .badge-paid { background: rgba(0,240,255,0.15); color: #00f0ff; border: 1px solid rgba(0,240,255,0.3); }
+    .badge-transit { background: rgba(139,92,246,0.15); color: #8b5cf6; border: 1px solid rgba(139,92,246,0.3); }
+    .badge-delivered { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+    .badge-failed { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+    .badge-cancelled { background: rgba(107,114,128,0.15); color: #9ca3af; border: 1px solid rgba(107,114,128,0.3); }
+    .badge-cod { background: rgba(251,146,60,0.15); color: #fb923c; border: 1px solid rgba(251,146,60,0.3); }
+
+    .timeline-item { position: relative; padding-left: 32px; }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 10px; top: 24px; bottom: 0;
+      width: 2px;
+      background: rgba(255,255,255,0.07);
+    }
+    .timeline-item:last-child::before { display: none; }
+    .timeline-dot {
+      position: absolute;
+      left: 0; top: 4px;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: rgba(0,240,255,0.15);
+      border: 2px solid rgba(0,240,255,0.4);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .timeline-dot.active {
+      background: rgba(0,240,255,0.25);
+      border-color: #00f0ff;
+      box-shadow: 0 0 12px rgba(0,240,255,0.4);
+    }
+    .timeline-dot span { font-size: 10px; color: #00f0ff; }
+
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0,240,255,0.3); }
+      50% { box-shadow: 0 0 0 8px rgba(0,240,255,0); }
+    }
+    .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+  </style>
+</head>
+
+<body class="min-h-screen">
+  <!-- Header -->
+  <header class="fixed top-0 w-full z-50 bg-[rgba(7,10,18,0.85)] backdrop-blur-xl border-b border-white/10">
+    <div class="flex justify-between items-center px-6 py-4 max-w-5xl mx-auto">
+      <a class="text-xl font-bold text-cyan-300 drop-shadow-[0_0_10px_rgba(0,240,255,0.4)]" href="shop.html">Ulap Corner</a>
+      <nav class="flex gap-6 items-center text-sm text-white/60">
+        <a href="shop.html" class="hover:text-white transition-colors">Shop</a>
+        <a href="checkout.html" class="hover:text-white transition-colors">Checkout</a>
+        <span class="text-cyan-300 border-b border-cyan-300 pb-0.5">Track Order</span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="pt-24 pb-16 px-4 max-w-3xl mx-auto">
+    <div class="mb-10 text-center">
+      <p class="text-xs text-cyan-400 uppercase tracking-widest mb-2">Order Status</p>
+      <h1 class="text-3xl font-bold text-white">Track Your Order</h1>
+      <p class="text-white/50 mt-2 text-sm">Enter your Order ID to see its current status and delivery timeline.</p>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="glass-card rounded-2xl p-6 mb-8">
+      <div class="flex gap-3">
+        <input
+          id="order-id-input"
+          type="text"
+          placeholder="e.g. CV-12345-FOG"
+          class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-cyan-400/60 placeholder-white/30 transition-all"
+        />
+        <button
+          id="track-btn"
+          onclick="trackOrder()"
+          class="bg-cyan-500 hover:bg-cyan-400 text-black font-bold px-6 py-3 rounded-xl text-sm transition-all flex items-center gap-2 active:scale-95"
+        >
+          <span class="material-symbols-outlined text-sm">search</span>
+          TRACK
+        </button>
+      </div>
+      <p id="search-error" class="text-red-400 text-xs mt-3 hidden"></p>
+    </div>
+
+    <!-- Order Details (hidden by default) -->
+    <div id="order-result" class="hidden space-y-6">
+
+      <!-- Order Header Card -->
+      <div class="glass-card rounded-2xl p-6">
+        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
+          <div>
+            <p class="text-xs text-white/40 uppercase tracking-widest mb-1">Order Reference</p>
+            <p id="result-order-id" class="text-2xl font-bold text-cyan-300 font-mono"></p>
+            <p id="result-date" class="text-xs text-white/40 mt-1"></p>
+          </div>
+          <div class="text-right">
+            <p class="text-xs text-white/40 uppercase tracking-widest mb-1">Total Amount</p>
+            <p id="result-total" class="text-2xl font-bold text-white"></p>
+            <div id="result-status-badge" class="mt-2 flex justify-end"></div>
+          </div>
+        </div>
+
+        <!-- Delivery Info -->
+        <div class="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
+          <div>
+            <p class="text-xs text-white/40 uppercase tracking-widest mb-1">Recipient</p>
+            <p id="result-name" class="text-sm text-white font-medium"></p>
+            <p id="result-contact" class="text-xs text-white/40 mt-0.5"></p>
+          </div>
+          <div>
+            <p class="text-xs text-white/40 uppercase tracking-widest mb-1">Delivery Address</p>
+            <p id="result-address" class="text-sm text-white/80"></p>
+          </div>
+          <div>
+            <p class="text-xs text-white/40 uppercase tracking-widest mb-1">Payment Method</p>
+            <p id="result-payment" class="text-sm text-white font-semibold"></p>
+          </div>
+          <div>
+            <p class="text-xs text-white/40 uppercase tracking-widest mb-1">City / Postal</p>
+            <p id="result-city" class="text-sm text-white/80"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Items Ordered -->
+      <div class="glass-card rounded-2xl p-6">
+        <h2 class="text-sm font-bold text-white/70 uppercase tracking-widest mb-4">Items Ordered</h2>
+        <div id="result-items" class="space-y-3"></div>
+        <div class="border-t border-white/5 mt-4 pt-4 space-y-1 text-sm text-white/60">
+          <div class="flex justify-between"><span>Subtotal</span><span id="result-subtotal" class="text-white"></span></div>
+          <div class="flex justify-between"><span>Shipping Fee</span><span id="result-shipping" class="text-white"></span></div>
+          <div class="flex justify-between text-emerald-400"><span>Discount</span><span id="result-discount"></span></div>
+          <div class="flex justify-between text-base font-bold text-white pt-2 border-t border-white/10 mt-2">
+            <span>Total</span><span id="result-total-2" class="text-cyan-300"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transaction Timeline -->
+      <div class="glass-card rounded-2xl p-6">
+        <h2 class="text-sm font-bold text-white/70 uppercase tracking-widest mb-6">Transaction Timeline</h2>
+        <div id="result-timeline" class="space-y-5"></div>
+      </div>
+
+      <!-- Track Another -->
+      <button onclick="resetSearch()" class="w-full py-3 rounded-xl border border-white/10 text-white/50 text-sm hover:bg-white/5 hover:text-white transition-all">
+        ← Track Another Order
+      </button>
+    </div>
+
+    <!-- Transaction History (from localStorage) -->
+    <div id="history-section" class="mt-10">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="material-symbols-outlined text-purple-400 text-lg">history</span>
+        <h2 class="text-sm font-bold text-white/60 uppercase tracking-widest">Your Order History</h2>
+      </div>
+      <div id="history-list" class="space-y-3">
+        <p class="text-white/30 text-sm text-center py-8">No past orders found in this browser.</p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    let currentOrderData = null;
+
+    function getStatusBadgeClass(status) {
+      const s = String(status || '').toUpperCase();
+      if (s === 'CONFIRMED' || s === 'COD') return 'badge-confirmed';
+      if (s === 'PENDING' || s === 'PENDING_PAYMENT') return 'badge-pending';
+      if (s === 'PAYMENT_SUCCESSFUL') return 'badge-paid';
+      if (s === 'IN_TRANSIT') return 'badge-transit';
+      if (s === 'DELIVERED') return 'badge-delivered';
+      if (s === 'COMPLETED') return 'badge-delivered';
+      if (s === 'PAYMENT_FAILED') return 'badge-failed';
+      if (s === 'CANCELLED') return 'badge-cancelled';
+      return 'badge-pending';
+    }
+
+    function getStatusLabel(status) {
+      const s = String(status || '').toUpperCase();
+      const labels = {
+        'CONFIRMED': '✅ Confirmed',
+        'COD': '🚚 Cash on Delivery',
+        'PENDING': '⏳ Pending',
+        'PENDING_PAYMENT': '⏳ Awaiting Payment',
+        'PAYMENT_SUCCESSFUL': '💳 Payment Successful',
+        'IN_TRANSIT': '📦 In Transit',
+        'DELIVERED': '🏠 Delivered',
+        'COMPLETED': '✅ Completed',
+        'PAYMENT_FAILED': '❌ Payment Failed',
+        'CANCELLED': '🚫 Cancelled',
+        'CREATED': '📝 Created',
+      };
+      return labels[s] || status;
+    }
+
+    function getStatusIcon(status) {
+      const s = String(status || '').toUpperCase();
+      const icons = {
+        'CREATED': 'receipt_long',
+        'CONFIRMED': 'check_circle',
+        'COD': 'local_shipping',
+        'PENDING': 'hourglass_empty',
+        'PENDING_PAYMENT': 'payment',
+        'PAYMENT_SUCCESSFUL': 'paid',
+        'IN_TRANSIT': 'local_shipping',
+        'DELIVERED': 'home',
+        'COMPLETED': 'done_all',
+        'PAYMENT_FAILED': 'error',
+        'CANCELLED': 'cancel',
+      };
+      return icons[s] || 'radio_button_checked';
+    }
+
+    function formatDate(ts) {
+      if (!ts) return '';
+      const d = new Date(ts);
+      return d.toLocaleString('en-PH', { dateStyle: 'medium', timeStyle: 'short' });
+    }
+
+    function formatPeso(amount) {
+      return '₱' + Number(amount || 0).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    async function trackOrder() {
+      const input = document.getElementById('order-id-input').value.trim();
+      const errorEl = document.getElementById('search-error');
+      const resultEl = document.getElementById('order-result');
+      const historySection = document.getElementById('history-section');
+
+      errorEl.classList.add('hidden');
+
+      if (!input) {
+        errorEl.textContent = 'Please enter an Order ID.';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+
+      const btn = document.getElementById('track-btn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">sync</span> LOADING...';
+
+      try {
+        const res = await fetch(`/api/orders/${encodeURIComponent(input)}`);
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || 'Order not found.');
+        }
+
+        currentOrderData = data;
+        renderOrderResult(data);
+        resultEl.classList.remove('hidden');
+        historySection.classList.add('hidden');
+
+        // Save to local history
+        try {
+          const history = JSON.parse(localStorage.getItem('cv_order_history') || '[]');
+          if (!history.includes(data.order.id)) {
+            history.unshift(data.order.id);
+            if (history.length > 20) history.length = 20;
+            localStorage.setItem('cv_order_history', JSON.stringify(history));
+          }
+        } catch(e) {}
+
+      } catch (err) {
+        errorEl.textContent = err.message || 'Failed to fetch order. Check the Order ID and try again.';
+        errorEl.classList.remove('hidden');
+        resultEl.classList.add('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span class="material-symbols-outlined text-sm">search</span> TRACK';
+      }
+    }
+
+    function renderOrderResult(data) {
+      const { order, ledger } = data;
+
+      document.getElementById('result-order-id').textContent = order.id;
+      document.getElementById('result-date').textContent = 'Placed: ' + formatDate(order.created_at);
+      document.getElementById('result-total').textContent = formatPeso(order.total_amount);
+      document.getElementById('result-name').textContent = order.full_name;
+      document.getElementById('result-contact').textContent = order.contact_number;
+      document.getElementById('result-address').textContent = order.address;
+      document.getElementById('result-city').textContent = `${order.city}, ${order.postal_code}`;
+      document.getElementById('result-payment').textContent = order.payment_method;
+      document.getElementById('result-subtotal').textContent = formatPeso(order.subtotal);
+      document.getElementById('result-shipping').textContent = formatPeso(order.shipping_fee);
+      document.getElementById('result-discount').textContent = '−' + formatPeso(order.discount);
+      document.getElementById('result-total-2').textContent = formatPeso(order.total_amount);
+
+      // Latest status from ledger or fallback
+      const latestLedger = ledger && ledger.length > 0 ? ledger[ledger.length - 1] : null;
+      const displayStatus = latestLedger ? latestLedger.status : order.payment_status;
+      const badgeClass = getStatusBadgeClass(displayStatus);
+      document.getElementById('result-status-badge').innerHTML = `
+        <span class="status-badge ${badgeClass}">${getStatusLabel(displayStatus)}</span>
+      `;
+
+      // Items
+      const itemsEl = document.getElementById('result-items');
+      const items = Array.isArray(order.items) ? order.items : [];
+      if (items.length === 0) {
+        itemsEl.innerHTML = '<p class="text-white/30 text-sm">No item details available.</p>';
+      } else {
+        itemsEl.innerHTML = items.map(item => `
+          <div class="flex items-center gap-4 py-2 border-b border-white/5 last:border-0">
+            <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-cyan-400 font-bold text-sm shrink-0">${item.qty}×</div>
+            <div class="flex-1">
+              <p class="text-sm text-white font-medium">${item.name}</p>
+              ${item.specs ? `<p class="text-xs text-white/40">${item.specs}</p>` : ''}
+            </div>
+            <p class="text-sm text-white font-semibold">${formatPeso(item.price * item.qty)}</p>
+          </div>
+        `).join('');
+      }
+
+      // Timeline
+      const timelineEl = document.getElementById('result-timeline');
+      if (!ledger || ledger.length === 0) {
+        timelineEl.innerHTML = '<p class="text-white/30 text-sm">No transaction history available.</p>';
+      } else {
+        timelineEl.innerHTML = [...ledger].reverse().map((entry, i) => {
+          const isLatest = i === 0;
+          const iconName = getStatusIcon(entry.status);
+          const badgeCls = getStatusBadgeClass(entry.status);
+          return `
+            <div class="timeline-item">
+              <div class="timeline-dot ${isLatest ? 'active animate-pulse-glow' : ''}">
+                <span class="material-symbols-outlined" style="font-size:12px">${iconName}</span>
+              </div>
+              <div class="pb-4">
+                <div class="flex flex-wrap items-center gap-2 mb-1">
+                  <span class="status-badge ${badgeCls}">${getStatusLabel(entry.status)}</span>
+                  <span class="text-xs text-white/30">${formatDate(entry.timestamp)}</span>
+                </div>
+                <p class="text-sm text-white/60">${entry.description || ''}</p>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    function resetSearch() {
+      document.getElementById('order-result').classList.add('hidden');
+      document.getElementById('history-section').classList.remove('hidden');
+      document.getElementById('order-id-input').value = '';
+      document.getElementById('search-error').classList.add('hidden');
+      currentOrderData = null;
+    }
+
+    // Load history on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      // Pre-fill from URL params
+      const urlParams = new URLSearchParams(window.location.search);
+      const orderId = urlParams.get('order_id');
+      if (orderId) {
+        document.getElementById('order-id-input').value = orderId;
+        trackOrder();
+      }
+
+      // Load order history from localStorage
+      try {
+        const history = JSON.parse(localStorage.getItem('cv_order_history') || '[]');
+        const historyList = document.getElementById('history-list');
+        if (history.length > 0) {
+          historyList.innerHTML = history.map(id => `
+            <div class="glass-card rounded-xl p-4 flex items-center justify-between gap-4 hover:border-cyan-400/20 transition-all cursor-pointer" onclick="loadHistoryOrder('${id}')">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-purple-400">receipt_long</span>
+                <span class="text-sm text-white font-mono font-medium">${id}</span>
+              </div>
+              <button class="text-xs text-cyan-400 hover:text-white flex items-center gap-1 transition-colors">
+                <span class="material-symbols-outlined text-sm">track_changes</span> Track
+              </button>
+            </div>
+          `).join('');
+        }
+      } catch(e) {}
+    });
+
+    async function loadHistoryOrder(id) {
+      document.getElementById('order-id-input').value = id;
+      await trackOrder();
+    }
+  </script>
+</body>
+
+</html>

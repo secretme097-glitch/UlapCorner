@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ulap Corner | Verify Your Email</title>
+  <meta name="description" content="Enter your 6-digit OTP code to verify your Ulap Corner account." />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+  <script src="/store/age-gate.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/theme.css" />
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(0, 240, 255, 0.12) 0%, transparent 30%),
+        radial-gradient(circle at 85% 80%, rgba(188, 19, 254, 0.10) 0%, transparent 30%),
+        linear-gradient(180deg, #06070f 0%, #090b12 100%);
+      color: #e3e2e7;
+    }
+
+    .otp-card {
+      background: rgba(7, 10, 18, 0.90);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(28px);
+      box-shadow: 0 48px 140px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(0, 240, 255, 0.04) inset;
+    }
+
+    /* ── OTP Input Boxes ─────────────────────────────────────── */
+    .otp-input {
+      width: 52px;
+      height: 64px;
+      background: rgba(15, 18, 32, 0.9);
+      border: 1.5px solid rgba(255, 255, 255, 0.10);
+      border-radius: 14px;
+      color: #00f0ff;
+      font-size: 26px;
+      font-weight: 900;
+      text-align: center;
+      outline: none;
+      caret-color: #00f0ff;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+      letter-spacing: 0;
+    }
+    .otp-input:focus {
+      border-color: rgba(0, 240, 255, 0.65);
+      box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.12), 0 0 18px rgba(0, 240, 255, 0.15);
+      transform: translateY(-2px);
+      background: rgba(0, 240, 255, 0.04);
+    }
+    .otp-input.filled {
+      border-color: rgba(0, 240, 255, 0.45);
+      background: rgba(0, 240, 255, 0.06);
+    }
+    .otp-input.error {
+      border-color: rgba(255, 74, 74, 0.65) !important;
+      box-shadow: 0 0 0 3px rgba(255, 74, 74, 0.10) !important;
+      color: #ff4a4a !important;
+      animation: shake 0.35s ease;
+    }
+    .otp-input.success {
+      border-color: rgba(0, 255, 163, 0.55) !important;
+      box-shadow: 0 0 0 3px rgba(0, 255, 163, 0.10) !important;
+      color: #00ffa3 !important;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-5px); }
+      40% { transform: translateX(5px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+
+    /* ── Timer ─────────────────────────────────────────────── */
+    .timer-display {
+      font-variant-numeric: tabular-nums;
+    }
+    .timer-warning { color: #f59e0b; }
+    .timer-expired { color: #ff4a4a; }
+
+    /* ── Verify Button ─────────────────────────────────────── */
+    #verify-btn {
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    #verify-btn:not(:disabled)::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.5s ease;
+    }
+    #verify-btn:not(:disabled):hover::after {
+      transform: translateX(100%);
+    }
+    #verify-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ── Resend ─────────────────────────────────────────────── */
+    #resend-btn {
+      transition: color 0.2s, opacity 0.2s;
+    }
+    #resend-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* ── Status message ────────────────────────────────────── */
+    .text-error-neon {
+      color: #ff4a4a;
+      text-shadow: 0 0 10px rgba(255, 74, 74, 0.3);
+    }
+    .text-success-neon {
+      color: #00ffa3;
+      text-shadow: 0 0 10px rgba(0, 255, 163, 0.3);
+    }
+
+    /* ── Glow pulse on email badge ─────────────────────────── */
+    .email-badge {
+      background: rgba(0, 240, 255, 0.06);
+      border: 1px solid rgba(0, 240, 255, 0.18);
+      animation: gentle-pulse 3s ease-in-out infinite;
+    }
+    @keyframes gentle-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.0); }
+      50%       { box-shadow: 0 0 14px 2px rgba(0, 240, 255, 0.10); }
+    }
+
+    /* ── Floating particles bg ─────────────────────────────── */
+    .particle {
+      position: fixed;
+      pointer-events: none;
+      border-radius: 50%;
+      opacity: 0;
+      animation: float-up 6s ease-in-out infinite;
+    }
+    @keyframes float-up {
+      0%   { transform: translateY(0) scale(1);   opacity: 0; }
+      20%  { opacity: 0.4; }
+      80%  { opacity: 0.15; }
+      100% { transform: translateY(-120vh) scale(0.6); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background particles -->
+  <div class="particle" style="width:3px;height:3px;background:#00f0ff;left:10%;top:90%;animation-delay:0s;animation-duration:7s;"></div>
+  <div class="particle" style="width:2px;height:2px;background:#bc13fe;left:25%;top:95%;animation-delay:1.5s;animation-duration:9s;"></div>
+  <div class="particle" style="width:4px;height:4px;background:#00f0ff;left:55%;top:88%;animation-delay:3s;animation-duration:8s;"></div>
+  <div class="particle" style="width:2px;height:2px;background:#bc13fe;left:75%;top:92%;animation-delay:0.8s;animation-duration:10s;"></div>
+  <div class="particle" style="width:3px;height:3px;background:#00f0ff;left:88%;top:85%;animation-delay:2s;animation-duration:7.5s;"></div>
+
+  <div class="min-h-screen flex flex-col justify-center px-4 py-12">
+    <div class="max-w-5xl mx-auto grid gap-10 lg:grid-cols-[1.4fr_1fr] items-center w-full">
+
+      <!-- Left Side: Branding -->
+      <div class="space-y-6 text-center lg:text-left">
+        <p class="uppercase tracking-[0.35em] text-xs text-cyan-300">Account Verification</p>
+        <h1 class="text-5xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
+          Verify your<br>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-purple-400">email address</span>
+        </h1>
+        <p class="max-w-xl text-base leading-8 text-slate-400">
+          We've sent a 6-digit security code to your email address. Enter it below to activate your Ulap Corner account.
+        </p>
+
+        <div class="space-y-3">
+          <div class="flex items-center gap-3 text-sm text-slate-400">
+            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center text-cyan-400 text-xs font-bold">1</span>
+            <span>Check your inbox for the 6-digit OTP code</span>
+          </div>
+          <div class="flex items-center gap-3 text-sm text-slate-400">
+            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-purple-400/10 border border-purple-400/20 flex items-center justify-center text-purple-400 text-xs font-bold">2</span>
+            <span>Enter the code in the boxes on the right</span>
+          </div>
+          <div class="flex items-center gap-3 text-sm text-slate-400">
+            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center text-cyan-400 text-xs font-bold">3</span>
+            <span>Your account will be instantly activated</span>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
+          <a href="/store/login.html" class="rounded-full bg-white/5 border border-cyan-400/25 px-6 py-3 text-sm font-semibold uppercase tracking-[0.35em] text-cyan-100 hover:bg-cyan-400/10 transition text-center">Back to login</a>
+          <a href="/store/register.html" class="rounded-full bg-purple-500/90 px-6 py-3 text-sm font-semibold uppercase tracking-[0.35em] text-white hover:bg-purple-400 transition text-center">Re-register</a>
+        </div>
+      </div>
+
+      <!-- Right Side: OTP Card -->
+      <div class="otp-card rounded-[32px] p-8 space-y-6">
+
+        <!-- Header -->
+        <div class="space-y-2">
+          <p class="text-[11px] uppercase tracking-[0.35em] text-slate-400">One-time code</p>
+          <h2 class="text-2xl font-bold text-white">Enter your OTP</h2>
+        </div>
+
+        <!-- Email display -->
+        <div id="email-badge" class="email-badge rounded-2xl px-4 py-3 flex items-center gap-3">
+          <svg class="w-4 h-4 text-cyan-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          <span id="email-display" class="text-sm text-cyan-300 font-medium truncate">Loading...</span>
+        </div>
+
+        <!-- Timer -->
+        <div class="flex items-center justify-between px-1">
+          <span class="text-xs uppercase tracking-[0.3em] text-slate-500">Code expires in</span>
+          <span id="timer" class="timer-display text-sm font-bold text-cyan-400">15:00</span>
+        </div>
+
+        <!-- Progress bar for timer -->
+        <div class="h-0.5 w-full bg-white/5 rounded-full overflow-hidden -mt-2">
+          <div id="timer-bar" class="h-full bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full transition-all duration-1000" style="width:100%"></div>
+        </div>
+
+        <!-- OTP Inputs -->
+        <form id="otp-form" class="space-y-6" autocomplete="off">
+          <div>
+            <label class="block text-[11px] uppercase tracking-[0.35em] text-slate-400 mb-4">Verification Code</label>
+            <div class="flex gap-2 justify-between" id="otp-inputs-container">
+              <input id="otp-0" class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="one-time-code" />
+              <input id="otp-1" class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" />
+              <input id="otp-2" class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" />
+              <input id="otp-3" class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" />
+              <input id="otp-4" class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" />
+              <input id="otp-5" class="otp-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" />
+            </div>
+          </div>
+
+          <!-- Status message -->
+          <p id="status-message" class="text-sm text-center font-semibold hidden"></p>
+
+          <!-- Verify Button -->
+          <button id="verify-btn" type="submit" disabled
+            class="w-full rounded-full bg-cyan-400 px-6 py-4 text-sm font-bold uppercase tracking-[0.35em] text-[#00181a] hover:bg-cyan-300 transition shadow-lg shadow-cyan-400/20">
+            Verify Account
+          </button>
+        </form>
+
+        <!-- Resend section -->
+        <div class="text-center space-y-1 pt-1">
+          <p class="text-sm text-slate-400">Didn't receive a code?</p>
+          <button id="resend-btn" disabled
+            class="text-sm font-semibold text-cyan-400 hover:text-cyan-300 transition">
+            Resend Code <span id="resend-countdown" class="text-slate-500 font-normal">(60s)</span>
+          </button>
+        </div>
+
+        <!-- Back to login link -->
+        <p class="text-sm text-slate-500 text-center border-t border-white/5 pt-4">
+          Wrong account? <a href="/store/register.html" class="text-purple-400 hover:text-purple-300 font-medium transition">Register again</a>
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── Retrieve email from URL params ────────────────────────────────────────
+    const params = new URLSearchParams(window.location.search);
+    const email = params.get('email') || '';
+
+    const emailDisplay = document.getElementById('email-display');
+    emailDisplay.textContent = email || 'your registered email';
+
+    // ── OTP input setup ───────────────────────────────────────────────────────
+    const inputs = Array.from({ length: 6 }, (_, i) => document.getElementById(`otp-${i}`));
+    const verifyBtn = document.getElementById('verify-btn');
+    const statusMsg = document.getElementById('status-message');
+
+    function getOTP() {
+      return inputs.map(inp => inp.value).join('');
+    }
+
+    function setStatus(msg, type = 'error') {
+      statusMsg.textContent = msg;
+      statusMsg.className = `text-sm text-center font-semibold ${type === 'error' ? 'text-error-neon' : 'text-success-neon'}`;
+      statusMsg.classList.remove('hidden');
+    }
+
+    function clearStatus() {
+      statusMsg.classList.add('hidden');
+    }
+
+    function updateVerifyBtn() {
+      verifyBtn.disabled = getOTP().length < 6;
+    }
+
+    function markInputsError() {
+      inputs.forEach(inp => {
+        inp.classList.remove('filled', 'success');
+        inp.classList.add('error');
+      });
+      setTimeout(() => inputs.forEach(inp => inp.classList.remove('error')), 700);
+    }
+
+    function markInputsSuccess() {
+      inputs.forEach(inp => {
+        inp.classList.remove('filled', 'error');
+        inp.classList.add('success');
+      });
+    }
+
+    inputs.forEach((input, idx) => {
+      input.addEventListener('input', e => {
+        const val = e.target.value.replace(/[^0-9]/g, '');
+        input.value = val;
+        input.classList.toggle('filled', val.length > 0);
+        clearStatus();
+        updateVerifyBtn();
+        if (val && idx < 5) inputs[idx + 1].focus();
+      });
+
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Backspace') {
+          if (!input.value && idx > 0) {
+            inputs[idx - 1].value = '';
+            inputs[idx - 1].classList.remove('filled');
+            inputs[idx - 1].focus();
+          } else {
+            input.value = '';
+            input.classList.remove('filled');
+          }
+          updateVerifyBtn();
+        } else if (e.key === 'ArrowLeft' && idx > 0) {
+          inputs[idx - 1].focus();
+        } else if (e.key === 'ArrowRight' && idx < 5) {
+          inputs[idx + 1].focus();
+        }
+      });
+
+      input.addEventListener('paste', e => {
+        e.preventDefault();
+        const text = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '').slice(0, 6);
+        text.split('').forEach((ch, i) => {
+          if (inputs[i]) {
+            inputs[i].value = ch;
+            inputs[i].classList.add('filled');
+          }
+        });
+        const next = Math.min(text.length, 5);
+        inputs[next].focus();
+        updateVerifyBtn();
+      });
+
+      input.addEventListener('focus', () => input.select());
+    });
+
+    // Focus first input on load
+    inputs[0].focus();
+
+    // ── 15-minute countdown timer ─────────────────────────────────────────────
+    const TOTAL_SECONDS = 15 * 60;
+    let secondsLeft = TOTAL_SECONDS;
+    const timerEl = document.getElementById('timer');
+    const timerBar = document.getElementById('timer-bar');
+    let timerExpired = false;
+
+    function formatTime(s) {
+      const m = Math.floor(s / 60);
+      const sec = s % 60;
+      return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+    }
+
+    const timerInterval = setInterval(() => {
+      secondsLeft--;
+      timerEl.textContent = formatTime(secondsLeft);
+      timerBar.style.width = `${(secondsLeft / TOTAL_SECONDS) * 100}%`;
+
+      if (secondsLeft <= 60 && secondsLeft > 0) {
+        timerEl.className = 'timer-display text-sm font-bold timer-warning';
+        timerBar.className = 'h-full bg-amber-400 rounded-full transition-all duration-1000';
+      }
+
+      if (secondsLeft <= 0) {
+        clearInterval(timerInterval);
+        timerEl.textContent = 'Expired';
+        timerEl.className = 'timer-display text-sm font-bold timer-expired';
+        timerBar.style.width = '0%';
+        timerExpired = true;
+        verifyBtn.disabled = true;
+        setStatus('Your verification code has expired. Please request a new one.', 'error');
+      }
+    }, 1000);
+
+    // ── 60-second resend cooldown ─────────────────────────────────────────────
+    const resendBtn = document.getElementById('resend-btn');
+    const resendCountdown = document.getElementById('resend-countdown');
+    let resendSecondsLeft = 60;
+
+    const resendInterval = setInterval(() => {
+      resendSecondsLeft--;
+      resendCountdown.textContent = resendSecondsLeft > 0 ? `(${resendSecondsLeft}s)` : '';
+      if (resendSecondsLeft <= 0) {
+        clearInterval(resendInterval);
+        resendBtn.disabled = false;
+        resendCountdown.textContent = '';
+      }
+    }, 1000);
+
+    resendBtn.addEventListener('click', async () => {
+      resendBtn.disabled = true;
+      resendBtn.textContent = 'Sending...';
+
+      try {
+        const res = await fetch('/api/auth/resend-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          setStatus(data.error || 'Failed to resend code.', 'error');
+          resendBtn.innerHTML = 'Resend Code';
+          resendBtn.disabled = false;
+          return;
+        }
+
+        setStatus('A new code has been sent to your email!', 'success');
+
+        // Reset timer
+        secondsLeft = TOTAL_SECONDS;
+        timerExpired = false;
+        timerEl.textContent = formatTime(TOTAL_SECONDS);
+        timerEl.className = 'timer-display text-sm font-bold text-cyan-400';
+        timerBar.style.width = '100%';
+        timerBar.className = 'h-full bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full transition-all duration-1000';
+        verifyBtn.disabled = getOTP().length < 6;
+
+        // Reset resend cooldown
+        let cd = 60;
+        resendBtn.innerHTML = `Resend Code <span class="text-slate-500 font-normal">(${cd}s)</span>`;
+        const cdInterval = setInterval(() => {
+          cd--;
+          resendBtn.innerHTML = cd > 0
+            ? `Resend Code <span class="text-slate-500 font-normal">(${cd}s)</span>`
+            : 'Resend Code';
+          if (cd <= 0) {
+            clearInterval(cdInterval);
+            resendBtn.disabled = false;
+          }
+        }, 1000);
+
+        // Clear inputs for new code
+        inputs.forEach(inp => { inp.value = ''; inp.className = 'otp-input'; });
+        inputs[0].focus();
+        updateVerifyBtn();
+      } catch (err) {
+        setStatus('Network error. Please try again.', 'error');
+        resendBtn.innerHTML = 'Resend Code';
+        resendBtn.disabled = false;
+      }
+    });
+
+    // ── Form submit: verify OTP ───────────────────────────────────────────────
+    document.getElementById('otp-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      clearStatus();
+
+      if (timerExpired) {
+        setStatus('Your code has expired. Please request a new one.', 'error');
+        markInputsError();
+        return;
+      }
+
+      const otp = getOTP();
+      if (otp.length < 6) {
+        setStatus('Please enter all 6 digits.', 'error');
+        return;
+      }
+
+      verifyBtn.disabled = true;
+      verifyBtn.textContent = 'Verifying...';
+
+      try {
+        const res = await fetch('/api/auth/verify-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, otp })
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          markInputsError();
+          setStatus(data.error || 'Verification failed. Please try again.', 'error');
+          verifyBtn.disabled = false;
+          verifyBtn.textContent = 'Verify Account';
+          return;
+        }
+
+        // ✅ Success!
+        markInputsSuccess();
+        clearInterval(timerInterval);
+        setStatus('✅ Account verified! Redirecting to login...', 'success');
+        verifyBtn.textContent = 'Verified!';
+
+        setTimeout(() => {
+          window.location.href = '/store/login.html?verified=true';
+        }, 1800);
+
+      } catch (err) {
+        setStatus('Network error. Please check your connection.', 'error');
+        verifyBtn.disabled = false;
+        verifyBtn.textContent = 'Verify Account';
+      }
+    });
+  </script>
+</body>
+</html>

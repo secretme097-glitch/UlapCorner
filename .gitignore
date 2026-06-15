@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.env
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+.vscode/
+*.code-workspace
+.DS_Store
+node-v20.11.1-win-x64/
