@@ -17,7 +17,7 @@ RUN npm install
 
 # Kopyahin at i-install ang server dependencies (sqlite3, bcrypt, express, atbp.)
 COPY server/package.json server/package-lock.json* ./server/
-RUN cd server && npm install
+RUN cd server && npm install --build-from-source
 
 # Kopyahin ang buong code ng project
 COPY server/ ./server/
