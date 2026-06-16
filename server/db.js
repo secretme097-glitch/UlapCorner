@@ -8,7 +8,12 @@ let dbInstance = null;
 async function getDb() {
   if (dbInstance) return dbInstance;
 
-  const DB_FILE = path.join(__dirname, '../data.db');
+  const fs = require('fs');
+  const DB_FILE = process.env.DB_PATH || path.join(__dirname, '../data.db');
+  
+  // Siguraduhing gawa ang directory para sa DB file kung hindi pa ito umiiral
+  fs.mkdirSync(path.dirname(DB_FILE), { recursive: true });
+
   dbInstance = await open({ filename: DB_FILE, driver: sqlite3.Database });
   dbInstance.configure('busyTimeout', 5000);
 
